@@ -13,34 +13,36 @@ def TerraApply(String LayerToDeploy, String Environment, String TerraAction) {
         LAYER=${LayerToDeploy} WORKSPACE=${Environment} make init
         LAYER=${LayerToDeploy} WORKSPACE=${Environment} make ${TerraAction}
         """
-	}
+}
 pipeline {
     agent any
     parameters {
-		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
+	booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
     }
     stages {
-        stage('Download Repositories') {
+         stage('Download Repositories') {
             steps {
-                dir ('modules') {
-                    checkout([
-                        $class: 'GitSCM', branches: [[name: '*/master']],
-                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'naveen_aws_core_module']],
-                        userRemoteConfigs: [[url: 'https://github.com/naveencloud/naveen_mediawiki_deployment.git']]
-                    ])
-                }
+                sh """
+		 echo "Hello World"
+		"""
+		 //dir ('modules') {
+                  //  checkout([
+                   //     $class: 'GitSCM', branches: [[name: '*/master']],
+                    //    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'naveen_aws_core_module']],
+                     //   userRemoteConfigs: [[url: 'https://github.com/naveencloud/naveen_mediawiki_deployment.git']]
+                    //])
+                //}
             }
         }
-		stage('MediaWiki_InfraCreration') {
-			when { expression { params._1_MEDIAWIKI_INFRA == true } }
-			steps {
-				script {
-					TerraApply("DEV", params.Environment, params.Action)
-				}
+	stage('MediaWiki_InfraCreration') {
+	when { expression { params._1_MEDIAWIKI_INFRA == true } }
+		steps {
+			script {
+				TerraApply("DEV", params.Environment, params.Action)
 			}
-
-		}
+		}	
+	}
     }//stages
 }//pipeline
