@@ -23,14 +23,6 @@ module "naveen_mediawiki_vpc" {
 
 }
 
-module "naveen_mediawiki_parametergroup" {
-  source = "../../modules/naveen_aws_core_module/rds-mysql-parametergroup"
-
-  rds_name = "mediawiki"
-  rds_parameter_group_family = "mysql5.5"
-
-}
-
 module "naveen_mediawiki_mysqlrds" {
   source = "../../modules/naveen_aws_core_module/rds-mysql"
 
@@ -83,7 +75,7 @@ module "naveen_mediawiki_loadbalancer" {
   lb_tg_port     = 80
   lb_tg_hc_path  = "/"
   lb_tg_hc_matcher = ""
-  lb_tg_hc_timeout = 120
+  lb_tg_hc_timeout = 29
   lb_tg_hc_interval = 30
   lb_tg_hc_hthreshold = 3
   lb_tg_hc_uhthreshold = 5
