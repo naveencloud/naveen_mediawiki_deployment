@@ -60,7 +60,7 @@ module "naveen_mediawiki_launchtemplate" {
   ec2_name               = "mediawiki-dev"
 
 }
-/*
+
 module "naveen_mediawiki_loadbalancer" {
   source = "../../modules/naveen_aws_core_module/alb"
 
@@ -110,7 +110,7 @@ module "naveen_mediawiki_asg" {
   environment               = "dev"
   cnf_asg_resourcename      = "mediaswikiasg"
 }
-*/
+
 /*
 
 resource "aws_security_group_rule" "ecs_container_sgr_egr_80" {
