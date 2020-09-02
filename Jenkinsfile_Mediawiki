@@ -15,7 +15,11 @@ def TerraApply(String LayerToDeploy, String Environment, String TerraAction) {
         """
 }
 pipeline {
-    //agent { label 'linux-01' }
+
+    agent none 
+    //environment {
+    //}
+
     parameters {
 		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
