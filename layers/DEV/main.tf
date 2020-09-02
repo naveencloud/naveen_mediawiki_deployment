@@ -71,7 +71,7 @@ module "naveen_mediawiki_loadbalancer" {
   application_service_port = 80
   lb_internal  = false
   idle_timeout = 300
-  lb_tg_protocol = ["HTTP"]
+  lb_tg_protocol = "HTTP"
   lb_tg_port     = 80
   lb_tg_hc_path  = "/"
   lb_tg_hc_matcher = ""
