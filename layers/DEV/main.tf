@@ -92,7 +92,7 @@ module "naveen_mediawiki_asg" {
   health_check_type     = "EC2"
   health_check_grace_period = 60
   default_cooldown          = 120
-  tg_arn                    = module.naveen_mediawiki_loadbalancer.core_tg_id
+  tg_arn                    = module.naveen_mediawiki_loadbalancer.tg_arn
   termination_policies      = "OldestInstance"
   VPCZoneIdentifier1        = module.naveen_mediawiki_vpc.appsubnet1
   VPCZoneIdentifier2        = module.naveen_mediawiki_vpc.appsubnet2
