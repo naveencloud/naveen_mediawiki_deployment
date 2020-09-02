@@ -60,7 +60,7 @@ module "naveen_mediawiki_launchtemplate" {
   ec2_name               = "mediawiki-dev"
 
 }
-
+/*
 module "naveen_mediawiki_loadbalancer" {
   source = "../../modules/naveen_aws_core_module/alb"
 
@@ -80,7 +80,7 @@ module "naveen_mediawiki_loadbalancer" {
   lb_tg_hc_hthreshold = 3
   lb_tg_hc_uhthreshold = 5
 }
-
+*/
 module "naveen_mediawiki_asg" {
   source = "../../modules/naveen_aws_core_module/autoscaling"
 
