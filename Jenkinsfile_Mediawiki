@@ -1,4 +1,4 @@
-#!groovy​
+#!groovy
 
 // Terraform apply or plan via the Makefile
 // Terraform apply or plan via the Makefile
