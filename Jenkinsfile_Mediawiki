@@ -21,7 +21,6 @@ pipeline {
 		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
-        choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
     }
     stages {
         stage('Download Repositories') {
