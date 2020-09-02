@@ -80,7 +80,7 @@ module "naveen_mediawiki_loadbalancer" {
   lb_tg_hc_hthreshold = 3
   lb_tg_hc_uhthreshold = 5
 }
-*/
+
 module "naveen_mediawiki_asg" {
   source = "../../modules/naveen_aws_core_module/autoscaling"
 
@@ -110,7 +110,7 @@ module "naveen_mediawiki_asg" {
   environment               = "dev"
   cnf_asg_resourcename      = "mediaswikiasg"
 }
-
+*/
 /*
 
 resource "aws_security_group_rule" "ecs_container_sgr_egr_80" {
