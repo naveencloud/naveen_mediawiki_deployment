@@ -89,7 +89,7 @@ module "naveen_mediawiki_asg" {
   asg_max_size    = 1
   asg_desired_capacity  = 1
   asg_min_size          = 1
-  health_check_type     = "ec2"
+  health_check_type     = "EC2"
   health_check_grace_period = 60
   default_cooldown          = 120
   tg_arn                    = module.naveen_mediawiki_loadbalancer.core_tg_id
