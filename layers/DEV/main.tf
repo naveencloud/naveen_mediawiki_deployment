@@ -1,6 +1,6 @@
 # Below are the list of resource to create MediaWiki Infrastructure
 module "naveen_mediawiki_vpc" {
-  source = "../../../../modules/naveen_aws_core_module/vpc"
+  source = "../../modules/naveen_aws_core_module/vpc"
 
   region = "eu-central-1"
   account_id = "449701711604"
@@ -26,7 +26,7 @@ module "naveen_mediawiki_vpc" {
 }
 
 module "naveen_mediawiki_parametergroup" {
-  source = "../../../../modules/naveen_aws_core_module/rds-mysql-parametergroup"
+  source = "../../modules/naveen_aws_core_module/rds-mysql-parametergroup"
 
   rds_name = "mediawiki"
   rds_parameter_group_family = "mysql5.5"
@@ -34,7 +34,7 @@ module "naveen_mediawiki_parametergroup" {
 }
 
 module "naveen_mediawiki_mysqlrds" {
-  source = "../../../../modules/naveen_aws_core_module/rds-mysql"
+  source = "../../modules/naveen_aws_core_module/rds-mysql"
 
   rds_name = "mediawiki"
   rds_parameter_group_family = "mysql5.5"
@@ -55,7 +55,7 @@ module "naveen_mediawiki_mysqlrds" {
 }
 
 module "naveen_mediawiki_launchtemplate" {
-  source = "../../../../modules/naveen_aws_core_module/launchtemplate"
+  source = "../../modules/naveen_aws_core_module/launchtemplate"
 
   core_lt_name     = "mediawiki"
   core_lt_ami    = "ami-0c115dbd34c69a004"
@@ -72,7 +72,7 @@ module "naveen_mediawiki_launchtemplate" {
 }
 
 module "naveen_mediawiki_loadbalancer" {
-  source = "../../../../modules/naveen_aws_core_module/alb"
+  source = "../../modules/naveen_aws_core_module/alb"
 
   environment = "dev"
   alb_name    = "mediawiki"
@@ -92,7 +92,7 @@ module "naveen_mediawiki_loadbalancer" {
 }
 
 module "naveen_mediawiki_asg" {
-  source = "../../../../modules/naveen_aws_core_module/autoscaling"
+  source = "../../modules/naveen_aws_core_module/autoscaling"
 
   cf_stack_name   = "mediawiki"
   asg_name        = "mediaswikiasg"
