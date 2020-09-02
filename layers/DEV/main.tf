@@ -98,9 +98,9 @@ module "naveen_mediawiki_asg" {
   VPCZoneIdentifier2        = module.naveen_mediawiki_vpc.appsubnet2
   enabled_metrics           = "GroupTotalInstances"
   OnDemandAllocationStrategy = "prioritized"
-  on_demand_base_capacity    = 50
+  on_demand_base_capacity    = 1
   launch_template_version    = module.naveen_mediawiki_launchtemplate.lt_version
-  on_demand_percentage_above_base_capacity = 50
+  on_demand_percentage_above_base_capacity = 100
   spot_max_price     = ""
   spot_instance_pools = 5
   launch_template_id  = module.naveen_mediawiki_launchtemplate.lt_id
