@@ -104,7 +104,7 @@ module "naveen_mediawiki_asg" {
   termination_policies      = ["OldestInstance"]
   VPCZoneIdentifier1        = module.naveen_mediawiki_vpc.appsubnet1
   VPCZoneIdentifier2        = module.naveen_mediawiki_vpc.appsubnet2
-  enabled_metrics           = ["GroupTotalInstances"]
+  enabled_metrics           = "GroupTotalInstances"
   OnDemandAllocationStrategy = "prioritized"
   on_demand_base_capacity    = 50
   launch_template_version    = "$Latest"
