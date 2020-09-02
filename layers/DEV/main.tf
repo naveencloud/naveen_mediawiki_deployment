@@ -99,7 +99,7 @@ module "naveen_mediawiki_asg" {
   enabled_metrics           = "GroupTotalInstances"
   OnDemandAllocationStrategy = "prioritized"
   on_demand_base_capacity    = 50
-  launch_template_version    = "$Latest"
+  launch_template_version    = module.naveen_mediawiki_launchtemplate.lt_version
   on_demand_percentage_above_base_capacity = 50
   spot_max_price     = ""
   spot_instance_pools = 5
