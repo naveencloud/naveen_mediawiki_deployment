@@ -3,7 +3,7 @@ module "naveen_mediawiki_vpc" {
   source = "../../../../modules/naveen_aws_core_module/vpc"
 
   region = "eu-central-1"
-  account_id = ""
+  account_id = "449701711604"
   vpc_cidr   = "192.168.0.0/16"
   environment = "dev"
   subnets_cidrs = {
@@ -29,7 +29,7 @@ module "naveen_mediawiki_parametergroup" {
   source = "../../../../modules/naveen_aws_core_module/rds-mysql-parametergroup"
 
   rds_name = "mediawiki"
-  rds_parameter_group_family = ""
+  rds_parameter_group_family = "mysql5.5"
 
 }
 
@@ -37,19 +37,20 @@ module "naveen_mediawiki_mysqlrds" {
   source = "../../../../modules/naveen_aws_core_module/rds-mysql"
 
   rds_name = "mediawiki"
-  rds_parameter_group_family = ""
+  rds_parameter_group_family = "mysql5.5"
   rds_encryption  = false
-  rds_db_engine   = ""
+  rds_db_engine   = "mysql"
   rds_allocated_storage = "10"
   rds_storage_type      = "gp2"
-  rds_engine_version    = ""
+  rds_engine_version    = "5.5.54"
   rds_instance_class    = "db.t2.micro"
-  rds_snapshot_identifier = ""
   rds_backup_retention_days = "7"
   rds_multi_az              = false
   rds_db_subnet_ids         = [module.naveen_mediawiki_vpc.dbsubnet1,module.naveen_mediawiki_vpc.dbsubnet2]
   vpc_id                    = module.naveen_mediawiki_vpc.vpcid
   environment               = "dev"
+  db_username               = "armin"
+  db_password               = "welcome123"
 
 }
 
@@ -57,12 +58,12 @@ module "naveen_mediawiki_launchtemplate" {
   source = "../../../../modules/naveen_aws_core_module/launchtemplate"
 
   core_lt_name     = "mediawiki"
-  core_lt_ami    = ""
+  core_lt_ami    = "ami-0c115dbd34c69a004"
+  vpc_id         = module.naveen_mediawiki_vpc.vpcid
   region     = "eu-central-1"
   cf_StackName   = "mediawiki"
   cf_resource_id  = "mediaswikiasg"
   instance_detail_monitoring = false
-  lt_security_group_ids  = ""
   resource_to_tag        = "volume"
   ebs_optimized          = true
   environment            = "dev"
@@ -120,9 +121,8 @@ module "naveen_mediawiki_asg" {
   cnf_asg_resourcename      = "mediaswikiasg"
 }
 
+/*
 
-
-# ECS contain er SG rules
 resource "aws_security_group_rule" "ecs_container_sgr_egr_80" {
   type                     = "egress"
   from_port                = 80
@@ -187,3 +187,4 @@ resource "aws_security_group_rule" "ecs_container_sgr_egr_53" {
   security_group_id = module.le_packet_process_ecs_service.core_ecs_container_sg
 }
 
+*/
