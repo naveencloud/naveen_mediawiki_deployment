@@ -113,7 +113,7 @@ module "naveen_mediawiki_asg" {
   on_demand_percentage_above_base_capacity = 50
   spot_max_price     = ""
   spot_instance_pools = 5
-  launch_template_id  = "${join("", module.naveen_mediawiki_launchtemplate.lt_id)}"
+  launch_template_id  = module.naveen_mediawiki_launchtemplate.lt_id
   spot_allocation_strategy  = "lowest-price"
   spot_instance_type1       = "t2.micro"
   ec2_name                  = "mediawiki"
