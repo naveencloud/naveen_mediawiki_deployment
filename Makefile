@@ -1,10 +1,6 @@
 # Makefile to kickoff terraform.
 # ####################################################
 #
-STATEBUCKET = uki-s3-webstack-terraform-state
-STATELOCKTABLE = webstack-terraform-state-lock
-STATEKEY = 6_Apache_Hybris/$(LAYER)/terraform.tfstate
-STATEREGION = eu-central-1
 
 # # Before we start test that we have the mandatory executables available
 	EXECUTABLES = git terraform
@@ -17,14 +13,14 @@ STATEREGION = eu-central-1
 first-run:
 	@echo "initialize remote state file"
 	cd layers/$(LAYER) && \
-	terraform init -backend-config="bucket=$(STATEBUCKET)" -backend-config="key=$(STATEKEY)" -backend-config="dynamodb_table=$(STATELOCKTABLE)" -backend-config="region=$(STATEREGION)"
+	terraform init
 
 
 init:
 	@echo "initialize remote state file"
 	cd layers/$(LAYER) && \
 	terraform workspace select $(WORKSPACE) || terraform workspace new $(WORKSPACE) && \
-	terraform init --force-copy -backend-config="bucket=$(STATEBUCKET)" -backend-config="key=$(STATEKEY)" -backend-config="dynamodb_table=$(STATELOCKTABLE)" -backend-config="region=$(STATEREGION)"
+	terraform init
 
 validate: init
 	@echo "running terraform validate"
