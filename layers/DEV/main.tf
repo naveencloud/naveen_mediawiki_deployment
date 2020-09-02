@@ -50,7 +50,7 @@ module "naveen_mediawiki_launchtemplate" {
   core_lt_name     = "mediawiki"
   core_lt_ami    = "ami-0c115dbd34c69a004"
   vpc_id         = module.naveen_mediawiki_vpc.vpcid
-  region     = "eu-central-1"
+  region        = "eu-central-1"
   cf_StackName   = "mediawiki"
   cf_resource_id  = "mediaswikiasg"
   instance_detail_monitoring = false
@@ -71,7 +71,7 @@ module "naveen_mediawiki_loadbalancer" {
   application_service_port = 80
   lb_internal  = false
   idle_timeout = 300
-  lb_tg_protocol = "http"
+  lb_tg_protocol = ["HTTP"]
   lb_tg_port     = 80
   lb_tg_hc_path  = "/"
   lb_tg_hc_matcher = ""
