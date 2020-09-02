@@ -6,11 +6,9 @@ module "naveen_mediawiki_vpc" {
   account_id = "449701711604"
   vpc_cidr   = "192.168.0.0/16"
   environment = "dev"
-  subnets_cidrs = {
-    public       = ["192.168.0.0/24", "192.168.3.0/24", "192.168.6.0/24"]
-    private_app  = ["192.168.1.0/24", "192.168.4.0/24", "192.168.7.0/24"]
-    private_db = ["192.168.2.0/24", "192.168.5.0/24", "192.168.8.0/24"]
-  }
+  public       = ["192.168.0.0/24", "192.168.3.0/24", "192.168.6.0/24"]
+  private_app  = ["192.168.1.0/24", "192.168.4.0/24", "192.168.7.0/24"]
+  private_db = ["192.168.2.0/24", "192.168.5.0/24", "192.168.8.0/24"]
   availability_zones = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
   vpc_name           = "mediawiki"
   vpc_flow_log_group_name = "mediawiki"
