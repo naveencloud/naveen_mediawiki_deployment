@@ -4,7 +4,7 @@ Details Related to Repo:
 
 Repo Name: naveen_mediawiki_deployment
 
-Language: Terraform
+Language: Terraform (HCL)
 
 This repo has the code to create required infrastructure to deploy any webapplication (i.e., MediaWiki)
 
@@ -35,7 +35,6 @@ This Repository is depen on the "Terraform core module repository" as shown belo
 
 Dependency Repo: naveen_aws_core_module
 
-Reference Architecture:
 
 
 
