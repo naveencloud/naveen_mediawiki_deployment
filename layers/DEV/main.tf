@@ -105,7 +105,11 @@ module "naveen_mediawiki_asg" {
   spot_instance_pools = 5
   launch_template_id  = module.naveen_mediawiki_launchtemplate.lt_id
   spot_allocation_strategy  = "lowest-price"
+  spot_instance_type1       = "t2.micro"
   spot_instance_type1       = "t2.medium"
+  spot_instance_type1       = "t2.large"
+  spot_instance_type1       = "t3.micro"
+  spot_instance_type1       = "t3.medium"
   ec2_name                  = "mediawiki"
   environment               = "dev"
   cnf_asg_resourcename      = "mediaswikiasg"
