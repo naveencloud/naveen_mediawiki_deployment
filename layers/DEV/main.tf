@@ -32,7 +32,7 @@ module "naveen_mediawiki_mysqlrds" {
   rds_db_engine   = "mysql"
   rds_allocated_storage = "10"
   rds_storage_type      = "gp2"
-  rds_engine_version    = "5.5.54"
+  rds_engine_version    = "5.5.61"
   rds_instance_class    = "db.t2.micro"
   rds_backup_retention_days = "7"
   rds_multi_az              = false
