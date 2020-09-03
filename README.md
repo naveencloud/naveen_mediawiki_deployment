@@ -35,7 +35,6 @@ This Repository is depen on the "Terraform core module repository" as shown belo
 
 Dependency Repo: naveen_aws_core_module
 
-Reference Architecture:
 
 
 
