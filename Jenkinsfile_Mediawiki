@@ -42,5 +42,18 @@ pipeline {
 				}
 			}
 		}
+        stage('Ansible_INSTALL_MEDIAWIKI') {
+            steps {
+                withCredentials([
+                        sshUserPrivateKey(credentialsId: 'Gitlab-shhkey', keyFileVariable: 'GIT_SSH_KEY')
+                ]) {
+                    dir('ansible-mediawiki') {
+                        script {
+                            sh 'ansible-playbook -i env/aws/ec2.py plays/installmediawiki.yml -e \'host=tag_Environment_dev\' -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=${workspace}/webstack.pem'
+                        }
+                    }
+                }
+            }
+        }
     }//stages
 }//pipeline

@@ -1,0 +1,12 @@
+#######
+#
+# Ansible Playbook
+# Description: This Ansible Playbook executes to install Apache, PHP, MediaWiki
+#
+#######
+---
+- hosts: "{{ host }}"
+  gather_facts: no
+
+  roles:
+  - ../../roles/mediawiki

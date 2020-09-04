@@ -1,0 +1,79 @@
+---
+- name: Run YUM Update
+  yum:
+    name: '*'
+    state: latest
+  become: yes
+  become_method: sudo
+
+- name: Remove PHP5.5 Version
+  yum:
+    name: php*
+    state: absent
+  become: yes
+  become_method: sudo
+
+- name: Install php7.2 version
+  shell:
+    cmd: amazon-linux-extras install php7.2
+  become: yes
+  become_method: sudo
+
+- name: install the latest version of Apache
+    yum:
+      name:
+        - httpd
+        - php-xml
+        - php-mbstring
+      state: latest
+  become: yes
+  become_method: sudo
+
+
+- name: MediaWiki Package Download
+  get_url:
+    url: "https://releases.wikimedia.org/mediawiki/1.34/{{ mediawiki_version }}.tar.gz"
+    dest: "/home/ec2-user"
+    force: no
+  become: yes
+  become_method: sudo
+
+- name: Unpack MediaWiki package
+  unarchive:
+    src: "/home/ec2-user/{{ mediawiki_version }}.tar.gz"
+    dest: "/var/www/"
+    creates: "/var/www/{{ mediawiki_version }}"
+    force: no
+    copy: false
+  become: yes
+  become_method: sudo
+
+- name: Rename Package dir name
+  shell:
+    cmd: mv {{ mediawiki_version }}  mediawiki
+  become: yes
+  become_method: sudo
+
+- name: Stop Apache Service
+  service:
+    name: httpd
+    state: stop
+  become: yes
+  become_method: sudo
+
+- name: Update Apache Httpd Configuration Document root
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="DirectoryIndex index.html" line="DirectoryIndex index.html \index.php" state=present
+  become: yes
+  become_method: sudo
+
+- name: Update DocumentIndex in apache with index.php
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^DocumentRoot* " line='DocumentRoot \"/var/www/mediawiki\" ' state=present
+  become: yes
+  become_method: sudo
+
+- name: Restart Apache Service
+  service:
+    name: httpd
+    state: restarted
+  become: yes
+  become_method: sudo
