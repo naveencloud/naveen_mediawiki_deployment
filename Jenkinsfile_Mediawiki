@@ -41,7 +41,7 @@ pipeline {
 					TerraApply("DEV", params.Environment, params.Action)
 				}
 			}
-		}
+		}/*
         stage('Ansible_INSTALL_MEDIAWIKI') {
             steps {
                 withCredentials([
@@ -54,6 +54,6 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
     }//stages
 }//pipeline
