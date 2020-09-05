@@ -18,6 +18,7 @@ def TerraApply(String LayerToDeploy, String Environment, String TerraAction) {
 pipeline {	
 	agent any 
     parameters {
+        booleanParam(name: 'PACKER_AMI_BUILD', defaultValue: false, description: 'Packer AMI Build')
 		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
