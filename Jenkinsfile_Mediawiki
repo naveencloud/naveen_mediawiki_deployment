@@ -49,11 +49,21 @@ pipeline {
                 ]) {
                     dir('ansible-mediawiki') {
                         script {
-                            sh 'ansible-playbook -i env/aws/ec2.py plays/installmediawiki.yml -e \'host=tag_Environment_dev\' -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=${workspace}/webstack.pem'
+                                sh 'ansible-playbook -i env/aws/ec2.py plays/installmediawiki.yml -e \'host=tag_Environment_dev\' -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=${workspace}/webstack.pem'
                         }
                     }
                 }
             }
         } */
+        stage('MediaWiki_AMI_Build') {
+            when { expression { params.PACKER_AMI_BUILD == true } }
+            steps {
+                sh '''
+			export packer_env=$Environment
+            echo -e "\nCreating MediaWiki Image with Packer...\n"
+            TMPDIR=`pwd` PACKER_LOG=1 PACKER_LOG_PATH="packerlog.txt" packer build packer/mediawikiamibuild.json
+          '''
+            }
+        }
     }//stages
 }//pipeline
