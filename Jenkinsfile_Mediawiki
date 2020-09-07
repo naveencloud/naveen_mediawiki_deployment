@@ -41,7 +41,7 @@ pipeline {
 			when { expression { params._1_MEDIAWIKI_INFRA == true } }
 			steps {
 				script {
-					TerraApply("DEV", params.Environment, params.Action, params.RDS_PASSWORD, params.EC2_KEYPAIR_NAME)
+					TerraApply("DEV", params.Environment, params.RDS_PASSWORD, params.EC2_KEYPAIR_NAME, params.Action)
 				}
 			}
 		}
