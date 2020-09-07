@@ -54,6 +54,7 @@ pipeline {
             }
         }
         stage('Ansible_INSTALL_MEDIAWIKI') {
+            when { expression { params._1_MEDIAWIKI_DEPLOYMENT == true } }
             steps {
                 withCredentials([
                         sshUserPrivateKey(credentialsId: 'Gitlab-shhkey', keyFileVariable: 'GIT_SSH_KEY')
