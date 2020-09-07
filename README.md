@@ -24,8 +24,8 @@ Jenkins Setup Details:
 
 PRE-REQUISITE:
 Below are the list of items required to execute MediaWiki Deployment.,
-1. Create Keypair for EC2 instance in AWS Console
-2. Download and Store the keypair in  Location in Jenkins Server
+1. Create Keypair for EC2 instance in AWS Console with name "mediawiki"
+2. Download and Store the privatekey in Jenkins Server location "/tmp/mediawiki.pem"
 3. Once the Infrastructure creating completed "Manually Execute peering between Jenkins VPC and Newly Created MediaWiki VPC" 
 HOW TO USE REPO:
 To deploy resource we can directly execute "terraform commands" to deploy infrastructure
