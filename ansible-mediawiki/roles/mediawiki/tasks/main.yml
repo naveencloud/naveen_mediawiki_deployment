@@ -20,12 +20,12 @@
   become_method: sudo
 
 - name: install the latest version of Apache
-    yum:
-      name:
-        - httpd
-        - php-xml
-        - php-mbstring
-      state: latest
+  yum:
+    name:
+      - httpd
+      - php-xml
+      - php-mbstring
+    state: latest
   become: yes
   become_method: sudo
 
@@ -48,21 +48,31 @@
   become: yes
   become_method: sudo
 
-- name: Rename Package dir name
-  shell:
-    cmd: mv {{ mediawiki_version }}  mediawiki
+#- name: Rename Package dir name
+#  shell:
+#    cmd: ln -s {{ mediawiki_version }}  mediawiki
+#  become: yes
+#  become_method: sudo
+
+- name: Create a symbolic link
+  file:
+    src: /var/www/{{ mediawiki_version }}
+    dest: /var/www/mediawiki
+    owner: apache
+    group: apache
+    state: link
   become: yes
   become_method: sudo
 
 - name: Stop Apache Service
   service:
     name: httpd
-    state: stop
+    state: stopped
   become: yes
   become_method: sudo
 
 - name: Update Apache Httpd Configuration Document root
-  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="DirectoryIndex index.html" line="DirectoryIndex index.html \index.php" state=present
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="DirectoryIndex index.html" line="DirectoryIndex index.html index.php" state=present
   become: yes
   become_method: sudo
 
