@@ -115,11 +115,3 @@ module "naveen_mediawiki_asg" {
   environment               = "dev"
   cnf_asg_resourcename      = "mediaswikiasg"
 }
-
-
-resource "null_resource" "bitbucket_pipelinefile" {
-  depends_on = [module.naveen_mediawiki_mysqlrds]
-  provisioner "local-exec" {
-    command = "curl -X POST -u '${var.BITBUCKET_USERNAME}:${var.BITBUCKET_PASSWORD}' https://api.bitbucket.org/2.0/repositories/tui-uk-dev/${var.source_market_name}-staticwebsite-${var.WEBSITENAME}/src -F '/bitbucket-pipelines.yml=@${path.module}/tmp/bitbucket-pipelines.yml'"
-  }
-}
