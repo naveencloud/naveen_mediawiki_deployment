@@ -2,7 +2,7 @@
 
 // Terraform apply or plan via the Makefile
 // Terraform apply or plan via the Makefile
-def TerraApply(String LayerToDeploy, String Environment, String RDS_PASSWORD, String EC2_KEYPAIR_NAME, String TerraAction) {
+def TerraApply(String LayerToDeploy, String Environment, String EC2_KEYPAIR_NAME, String TerraAction) {
     // force all non apply requests to plan
     // if (TerraAction != 'apply') {
     //     TerraAction = 'plan'
@@ -10,9 +10,9 @@ def TerraApply(String LayerToDeploy, String Environment, String RDS_PASSWORD, St
     sh """
         set +x
         echo "=== Terraform ${TerraAction} for ${LayerToDeploy} in ${Environment} ==="
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make first-run
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make init
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make ${TerraAction}
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make first-run
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make init
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make ${TerraAction}
         """
 }
 pipeline {	
@@ -39,9 +39,12 @@ pipeline {
         }
         stage('MediaWiki_Infra_Creation') {
 			when { expression { params._1_MEDIAWIKI_INFRA == true } }
+            environment {
+                TF_VAR_RDS_PASSWORD = "${params.RDS_PASSWORD}"
+            }
 			steps {
 				script {
-					TerraApply("DEV", params.Environment, params.RDS_PASSWORD, params.EC2_KEYPAIR_NAME, params.Action)
+					TerraApply("DEV", params.Environment, params.EC2_KEYPAIR_NAME, params.Action)
 				}
 			}
 		}
