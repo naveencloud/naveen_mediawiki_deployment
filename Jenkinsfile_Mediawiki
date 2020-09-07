@@ -45,7 +45,7 @@ pipeline {
 				}
 			}
 		}
-        stage('MediaWiki_InfraCreration') {
+        stage('MediaWiki_Deployment') {
             when { expression { params._1_MEDIAWIKI_INFRA == true } }
             steps {
                 script {
