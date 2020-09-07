@@ -2,7 +2,7 @@
 
 // Terraform apply or plan via the Makefile
 // Terraform apply or plan via the Makefile
-def TerraApply(String LayerToDeploy, String Environment, String TerraAction, String RDS_PASSWORD, String EC2_KEYPAIR_NAME) {
+def TerraApply(String LayerToDeploy, String Environment, String RDS_PASSWORD, String EC2_KEYPAIR_NAME, String TerraAction) {
     // force all non apply requests to plan
     // if (TerraAction != 'apply') {
     //     TerraAction = 'plan'
@@ -23,7 +23,7 @@ pipeline {
         password(name: 'RDS_PASSWORD', description: 'RDS MYSQL Password and Username is admin and Database Schema name is mediawiki')
         string(name: 'EC2_KEYPAIR_NAME', description: 'EC2 Keypair need to use to create EC2 instance')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
-        choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
+        choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Terraform Action')
     }
     stages {
         stage('Download Repositories') {
@@ -37,7 +37,7 @@ pipeline {
                 }
             }
         }
-        stage('MediaWiki_InfraCreration') {
+        stage('MediaWiki_Infra_Creation') {
 			when { expression { params._1_MEDIAWIKI_INFRA == true } }
 			steps {
 				script {
@@ -54,7 +54,6 @@ pipeline {
             }
         }
         stage('Ansible_INSTALL_MEDIAWIKI') {
-            when { expression { params._1_MEDIAWIKI_DEPLOYMENT == true } }
             steps {
                 withCredentials([
                         sshUserPrivateKey(credentialsId: 'Gitlab-shhkey', keyFileVariable: 'GIT_SSH_KEY')
