@@ -63,10 +63,10 @@ pipeline {
         stage('Ansible_INSTALL_MEDIAWIKI') {
             when { expression { params._1_MEDIAWIKI_DEPLOYMENT == true } }
             steps {
-                 {
+                {
                     dir('ansible-mediawiki') {
                         script {
-                                sh 'ansible-playbook -vvv -i ansible-mediawiki/env/aws/ec2.py ansible-mediawiki/plays/installmediawiki.yml -e "host=tag_Name_mediawiki:&tag_Environment_dev" -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=/tmp/mediawiki.pem'
+                            sh 'ansible-playbook -vvv -i ansible-mediawiki/env/aws/ec2.py ansible-mediawiki/plays/installmediawiki.yml -e "host=tag_Name_mediawiki:&tag_Environment_dev" -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=/tmp/mediawiki.pem'
                         }
                     }
                 }
