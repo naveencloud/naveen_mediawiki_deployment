@@ -21,7 +21,7 @@ pipeline {
 		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
         booleanParam(name: '_1_MEDIAWIKI_DEPLOYMENT', defaultValue: false, description: 'Ansible Execution to deploy MediaWiki Application')
         password(name: 'RDS_PASSWORD', description: 'RDS MYSQL Password and Username is admin and Database Schema name is mediawiki')
-        string(name: 'EC2_KEYPAIR_NAME', description: 'EC2 Keypair need to use to create EC2 instance')
+        string(name: 'EC2_KEYPAIR_NAME', defaultValue: 'mediawiki', description: 'EC2 Keypair need to use to create EC2 instance')
         string(name: 'private_key_location', defaultValue: '/tmp/mediawiki.pem', description: 'PrivateKey file store location which will be used by Ansible to do SSH ie., Upload Key file in this Location')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Terraform Action')
