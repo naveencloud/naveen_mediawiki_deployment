@@ -2,7 +2,7 @@
 
 // Terraform apply or plan via the Makefile
 // Terraform apply or plan via the Makefile
-def TerraApply(String LayerToDeploy, String Environment, String TerraAction, String EC2_KEYPAIR_NAME, String RDS_PASSWORD) {
+def TerraApply(String LayerToDeploy, String Environment, String TerraAction, String RDS_PASSWORD, String EC2_KEYPAIR_NAME) {
     // force all non apply requests to plan
     // if (TerraAction != 'apply') {
     //     TerraAction = 'plan'
