@@ -22,7 +22,7 @@ pipeline {
         booleanParam(name: '_1_MEDIAWIKI_DEPLOYMENT', defaultValue: false, description: 'Ansible Execution to deploy MediaWiki Application')
         password(name: 'RDS_PASSWORD', description: 'RDS MYSQL Password and Username is admin and Database Schema name is mediawiki')
         string(name: 'EC2_KEYPAIR_NAME', description: 'EC2 Keypair need to use to create EC2 instance')
-        string(name: 'private_key_location', description: 'PrivateKey file store location which will be used by Ansible to do SSH')
+        string(name: 'private_key_location', defaultValue: '/tmp/mediawiki.pem', description: 'PrivateKey file store location which will be used by Ansible to do SSH ie., Upload Key file in this Location')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Terraform Action')
     }
@@ -66,7 +66,7 @@ pipeline {
                  {
                     dir('ansible-mediawiki') {
                         script {
-                                sh 'ansible-playbook -vvv -i ansible-mediawiki/env/aws/ec2.py ansible-mediawiki/plays/installmediawiki.yml -e "host=tag_Name_mediawiki:&tag_Environment_dev" -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file="${private_key}"'
+                                sh 'ansible-playbook -vvv -i ansible-mediawiki/env/aws/ec2.py ansible-mediawiki/plays/installmediawiki.yml -e "host=tag_Name_mediawiki:&tag_Environment_dev" -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=/tmp/mediawiki.pem'
                         }
                     }
                 }
