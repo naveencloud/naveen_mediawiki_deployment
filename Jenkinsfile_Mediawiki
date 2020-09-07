@@ -10,9 +10,9 @@ def TerraApply(String LayerToDeploy, String Environment, String TerraAction) {
     sh """
         set +x
         echo "=== Terraform ${TerraAction} for ${LayerToDeploy} in ${Environment} ==="
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} make first-run
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} make init
-        LAYER=${LayerToDeploy} WORKSPACE=${Environment} make ${TerraAction}
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make first-run
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make init
+        LAYER=${LayerToDeploy} WORKSPACE=${Environment} RDS_PASSWORD=${RDS_PASSWORD} EC2_KEYPAIR_NAME=${EC2_KEYPAIR_NAME} make ${TerraAction}
         """
 }
 pipeline {	
@@ -20,6 +20,9 @@ pipeline {
     parameters {
         booleanParam(name: 'PACKER_AMI_BUILD', defaultValue: false, description: 'Packer AMI Build')
 		booleanParam(name: '_1_MEDIAWIKI_INFRA', defaultValue: false, description: 'Infrastructure creation')
+        booleanParam(name: '_1_MEDIAWIKI_DEPLOYMENT', defaultValue: false, description: 'Ansible Execution to deploy MediaWiki Application')
+        password(name: 'RDS_PASSWORD', description: 'RDS MYSQL Password and Username is admin and Database Schema name is mediawiki')
+        string(name: 'EC2_KEYPAIR_NAME', description: 'EC2 Kedpair need to use to create EC2 instance')
         choice(name: 'Environment', choices: 'DEV', description: 'Select Environment')
         choice(name: 'Action', choices: 'plan\napply\nplan-destroy\ndestroy', description: 'Select Action')
     }
@@ -39,31 +42,30 @@ pipeline {
 			when { expression { params._1_MEDIAWIKI_INFRA == true } }
 			steps {
 				script {
-					TerraApply("DEV", params.Environment, params.Action)
+					TerraApply("DEV", params.Environment, params.Action, params.RDS_PASSWORD, params.EC2_KEYPAIR_NAME)
 				}
 			}
-		}/*
+		}
+        stage('MediaWiki_InfraCreration') {
+            when { expression { params._1_MEDIAWIKI_INFRA == true } }
+            steps {
+                script {
+                    sh 'echo Establish Peering connection between Jenkins VPC and Newly Created VPC'
+                }
+            }
+        }
         stage('Ansible_INSTALL_MEDIAWIKI') {
+            when { expression { params._1_MEDIAWIKI_DEPLOYMENT == true } }
             steps {
                 withCredentials([
                         sshUserPrivateKey(credentialsId: 'Gitlab-shhkey', keyFileVariable: 'GIT_SSH_KEY')
                 ]) {
                     dir('ansible-mediawiki') {
                         script {
-                                sh 'ansible-playbook -i env/aws/ec2.py plays/installmediawiki.yml -e \'host=tag_Environment_dev\' -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file=${workspace}/webstack.pem'
+                                sh 'ansible-playbook -vvv -i ansible-mediawiki/env/aws/ec2.py ansible-mediawiki/plays/installmediawiki.yml -e "host=tag_Name_mediawiki:&tag_Environment_dev" -e ansible_ssh_user=ec2-user  -e ansible_ssh_private_key_file='
                         }
                     }
                 }
-            }
-        } */
-        stage('MediaWiki_AMI_Build') {
-            when { expression { params.PACKER_AMI_BUILD == true } }
-            steps {
-                sh '''
-			export packer_env=$Environment
-            echo -e "\nCreating MediaWiki Image with Packer...\n"
-            TMPDIR=`pwd` PACKER_LOG=1 PACKER_LOG_PATH="packerlog.txt" packer build packer/mediawikiamibuild.json
-          '''
             }
         }
     }//stages

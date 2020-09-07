@@ -39,8 +39,8 @@ module "naveen_mediawiki_mysqlrds" {
   rds_db_subnet_ids         = [module.naveen_mediawiki_vpc.dbsubnet1,module.naveen_mediawiki_vpc.dbsubnet2]
   vpc_id                    = module.naveen_mediawiki_vpc.vpcid
   environment               = "dev"
-  db_username               = "armin"
-  db_password               = "welcome123"
+  db_username               = "admin"
+  db_password               = var.RDS_PASSWORD
 
 }
 
@@ -58,6 +58,7 @@ module "naveen_mediawiki_launchtemplate" {
   ebs_optimized          = true
   environment            = "dev"
   ec2_name               = "mediawiki-dev"
+  key_name               = var.EC2_KEYPAIR_NAME
 
 }
 
@@ -113,4 +114,12 @@ module "naveen_mediawiki_asg" {
   ec2_name                  = "mediawiki"
   environment               = "dev"
   cnf_asg_resourcename      = "mediaswikiasg"
+}
+
+
+resource "null_resource" "bitbucket_pipelinefile" {
+  depends_on = [module.naveen_mediawiki_mysqlrds]
+  provisioner "local-exec" {
+    command = "curl -X POST -u '${var.BITBUCKET_USERNAME}:${var.BITBUCKET_PASSWORD}' https://api.bitbucket.org/2.0/repositories/tui-uk-dev/${var.source_market_name}-staticwebsite-${var.WEBSITENAME}/src -F '/bitbucket-pipelines.yml=@${path.module}/tmp/bitbucket-pipelines.yml'"
+  }
 }
